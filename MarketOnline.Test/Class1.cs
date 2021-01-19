@@ -1,12 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WebSocketSharp;
 
-namespace MarketOnline.Test
+namespace Example
 {
-    public class Class1
+    public class Program
     {
+        public static void Main(string[] args)
+        {
+            using (var ws = new WebSocket("wss://stream.binance.com:9443/ws"))
+            {
+                ws.OnMessage += (sender, e) =>
+                    Console.WriteLine("Laputa says: " + e.Data);
+                ws.OnOpen += (sender, e) => Console.WriteLine("连接成功！");
+                ws.Connect();
+                ws.Send(@"{ ""method"": ""SUBSCRIBE"", ""params"": [ ""btcusdt@bookTicker""], ""id"": 1 }");
+                Console.ReadKey(true);
+            }
+        }
     }
 }
