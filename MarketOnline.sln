@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketOnline.Test", "Market
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketOnline.Core", "MarketOnline.Core\MarketOnline.Core.csproj", "{7C77D3BB-44E4-49F1-B309-C1F6C882FAAB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketOnline.Run", "MarketOnline.Run\MarketOnline.Run.csproj", "{08BAFBF3-53C9-407B-9A1D-D1657FE1DA58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7C77D3BB-44E4-49F1-B309-C1F6C882FAAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C77D3BB-44E4-49F1-B309-C1F6C882FAAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C77D3BB-44E4-49F1-B309-C1F6C882FAAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08BAFBF3-53C9-407B-9A1D-D1657FE1DA58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08BAFBF3-53C9-407B-9A1D-D1657FE1DA58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08BAFBF3-53C9-407B-9A1D-D1657FE1DA58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08BAFBF3-53C9-407B-9A1D-D1657FE1DA58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
