@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace MarketOnline.Core.Resource
 {
+    /// <summary>
+    /// 预加载的资源
+    /// </summary>
     public class StaticResource
     {
         /// <summary>

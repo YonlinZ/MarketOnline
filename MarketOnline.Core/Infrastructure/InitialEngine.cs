@@ -47,6 +47,7 @@ namespace MarketOnline.Core.Infrastructure
         private static async Task GetKline()
         {
             var result = await "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h".GetJsonAsync<List<List<object>>>();
+            
             StaticResource.Kline["BTCUSDT"] = result;
 
 
