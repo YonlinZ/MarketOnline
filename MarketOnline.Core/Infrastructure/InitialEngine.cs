@@ -30,28 +30,57 @@ namespace MarketOnline.Core.Infrastructure
             {
                 while (true)
                 {
-                    var result = await "https://api.binance.com/api/v3/ticker/price".GetJsonAsync<List<SymbolPrice>>();
-                    var symbols = result.Select(s => s.symbol);
-                    var except = symbols.Except(StaticResource.AllSymbols);
-                    if (except.Any())
+                    //var result = await "https://api.binance.com/api/v3/ticker/price".GetJsonAsync<List<SymbolPrice>>();
+                    var res = await "https://api.binance.com/api/v3/exchangeInfo".GetAsync();
+                    switch (res.StatusCode)
                     {
-                        StaticResource.AllSymbols.AddRange(except);
+                        case 200:
+                            var result = await res.GetJsonAsync<ExchangeInfo>();
+                            var symbols = result.symbols
+                                    .Where(s => s.symbol.EndsWith("USDT"))
+                                    .Select(s => s.symbol);
+                            var except = symbols.Except(StaticResource.AllSymbols);
+                            if (except.Any())
+                            {
+                                StaticResource.AllSymbols.AddRange(except);
+                            }
+                            Thread.Sleep(60 * 1000);
+                            break;
+                        case 429:
+                            break;
+                        case 418:
+                            break;
                     }
+
                     //Console.WriteLine($"Request {++counter}");
                     //Console.WriteLine(string.Join(",", StaticResource.AllSymbols.ToArray()));
-                    Thread.Sleep(5000);
                 }
             }, TaskCreationOptions.LongRunning);
         }
 
         private static async Task GetKline()
         {
-            var result = await "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h".GetJsonAsync<List<List<object>>>();
-            
-            StaticResource.Kline["BTCUSDT"] = result;
-
-
-
+            var kline = new SymbolKlineSet("BTCUSDT");
+            var taskList = new List<Task>();
+            foreach (var interval in ConstVar.KlineIntervals)
+            {
+                var task = Task.Run(async () =>
+                {
+                    var res = await $"https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval={interval}".GetAsync();
+                    if (res.StatusCode == 200)
+                    {
+                        var result = await res.GetJsonAsync<List<object[]>>();
+                        kline.IntervalKline[interval] = result;
+                    }
+                    else if (res.StatusCode == 429)
+                    {
+                        //break;
+                    }
+                });
+                taskList.Add(task);
+            }
+            Task.WaitAll(taskList.ToArray());
+            StaticResource.Klines[kline.Symbol] = kline;
         }
 
     }

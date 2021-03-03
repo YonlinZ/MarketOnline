@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MarketOnline.Core.Resource
 {
@@ -11,7 +7,11 @@ namespace MarketOnline.Core.Resource
     {
         public string Symbol { get; private set; }
 
-        public ConcurrentDictionary<string, List<List<object>>> IntervalKline { get; set; } = new ConcurrentDictionary<string, List<List<object>>>();
+        /// <summary>
+        /// key: kline interval
+        /// value: kline 
+        /// </summary>
+        public ConcurrentDictionary<string, List<object[]>> IntervalKline { get; set; } = new ConcurrentDictionary<string, List<object[]>>();
 
         public SymbolKlineSet(string symbol)
         {

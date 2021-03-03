@@ -56,6 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity\ExchangeInfo.cs" />
     <Compile Include="Entity\SymbolPrice.cs" />
     <Compile Include="Infrastructure\InitialEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
