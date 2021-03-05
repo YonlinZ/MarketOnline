@@ -1,5 +1,8 @@
 ﻿namespace MarketOnline.Core.Entity
 {
+    /// <summary>
+    /// 交易规范信息
+    /// </summary>
     public class ExchangeInfo
     {
         public string timezone { get; set; }

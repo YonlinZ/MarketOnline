@@ -30,12 +30,12 @@ namespace MarketOnline.Core.Infrastructure
             {
                 while (true)
                 {
-                    //var result = await "https://api.binance.com/api/v3/ticker/price".GetJsonAsync<List<SymbolPrice>>();
-                    var res = await "https://api.binance.com/api/v3/exchangeInfo".GetAsync();
+                    //var result = await $"{ConstVar.BaseUrl}/ticker/price".GetJsonAsync<List<SymbolPrice>>();
+                    var res = await $"{ConstVar.BaseUrl}/exchangeInfo".GetAsync();
                     switch (res.StatusCode)
                     {
                         case 200:
-                            var result = await res.GetJsonAsync<ExchangeInfo>();
+                            StaticResource.ExchangeInfo = await res.GetJsonAsync<ExchangeInfo>();
                             var symbols = result.symbols
                                     .Where(s => s.symbol.EndsWith("USDT"))
                                     .Select(s => s.symbol);
@@ -57,7 +57,23 @@ namespace MarketOnline.Core.Infrastructure
                 }
             }, TaskCreationOptions.LongRunning);
         }
-
+        /// <summary>
+        /// 获取24小时价格变动
+        /// 权重 40
+        /// </summary>
+        /// <returns></returns>
+        private async static Task GetPriceChange()
+        {
+            await Task.Run(async () =>
+            {
+                var res = await $"{ConstVar.BaseUrl}/ticker/24hr".GetJsonAsync<List<PriceChange>>();
+                res = res.OrderByDescending(s => double.Parse(s.volume)).ToList();
+            });
+        }
+        /// <summary>
+        /// 获取所有k线数据
+        /// </summary>
+        /// <returns></returns>
         private static async Task GetKline()
         {
             var kline = new SymbolKlineSet("BTCUSDT");
@@ -66,7 +82,7 @@ namespace MarketOnline.Core.Infrastructure
             {
                 var task = Task.Run(async () =>
                 {
-                    var res = await $"https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval={interval}".GetAsync();
+                    var res = await $"{ConstVar.BaseUrl}/klines?symbol=BTCUSDT&interval={interval}".GetAsync();
                     if (res.StatusCode == 200)
                     {
                         var result = await res.GetJsonAsync<List<object[]>>();

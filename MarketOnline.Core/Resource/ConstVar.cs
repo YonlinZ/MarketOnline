@@ -11,6 +11,8 @@ namespace MarketOnline.Core.Resource
     /// </summary>
     public class ConstVar
     {
+        public const string BaseUrl = "https://api.binance.com/api/v3";
+
         /// <summary>
         /// k线周期 15钟
         /// </summary>
