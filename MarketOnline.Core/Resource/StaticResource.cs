@@ -15,7 +15,7 @@ namespace MarketOnline.Core.Resource
         /// <summary>
         /// 所有用usdt计价的交易对 264个
         /// </summary>
-        public static List<string> AllSymbols { get; private set; } = new List<string>();
+        public static List<string> AllSymbols { get; set; } = new List<string>();
         public static ExchangeInfo ExchangeInfo { get; set; }
         /// <summary>
         /// key: symbol

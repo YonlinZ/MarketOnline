@@ -17,6 +17,7 @@ namespace MarketOnline.Core.Infrastructure
         {
             await GetAllSymbols();
             await GetKline();
+            await GetPriceChange();
         }
 
         /// <summary>
@@ -30,13 +31,12 @@ namespace MarketOnline.Core.Infrastructure
             {
                 while (true)
                 {
-                    //var result = await $"{ConstVar.BaseUrl}/ticker/price".GetJsonAsync<List<SymbolPrice>>();
                     var res = await $"{ConstVar.BaseUrl}/exchangeInfo".GetAsync();
                     switch (res.StatusCode)
                     {
                         case 200:
                             StaticResource.ExchangeInfo = await res.GetJsonAsync<ExchangeInfo>();
-                            var symbols = result.symbols
+                            var symbols = StaticResource.ExchangeInfo.symbols
                                     .Where(s => s.symbol.EndsWith("USDT"))
                                     .Select(s => s.symbol);
                             var except = symbols.Except(StaticResource.AllSymbols);
@@ -51,9 +51,6 @@ namespace MarketOnline.Core.Infrastructure
                         case 418:
                             break;
                     }
-
-                    //Console.WriteLine($"Request {++counter}");
-                    //Console.WriteLine(string.Join(",", StaticResource.AllSymbols.ToArray()));
                 }
             }, TaskCreationOptions.LongRunning);
         }
@@ -67,7 +64,17 @@ namespace MarketOnline.Core.Infrastructure
             await Task.Run(async () =>
             {
                 var res = await $"{ConstVar.BaseUrl}/ticker/24hr".GetJsonAsync<List<PriceChange>>();
-                res = res.OrderByDescending(s => double.Parse(s.volume)).ToList();
+                StaticResource.PriceChanges = res;
+                // 对交易对排序
+                StaticResource.AllSymbols = StaticResource.AllSymbols.OrderByDescending(s =>
+                    {
+                        var item = res.FirstOrDefault(pc => pc.symbol == s);
+                        if (item != null)
+                        {
+                            return double.Parse(item.quoteVolume);
+                        }
+                        return 0;
+                    }).ToList();
             });
         }
         /// <summary>

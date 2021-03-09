@@ -60,6 +60,7 @@
     <Compile Include="Entity\PriceChange.cs" />
     <Compile Include="Entity\SymbolPrice.cs" />
     <Compile Include="Infrastructure\InitialEngine.cs" />
+    <Compile Include="Infrastructure\RequestLimitUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource\ConstVar.cs" />
     <Compile Include="Resource\StaticResource.cs" />

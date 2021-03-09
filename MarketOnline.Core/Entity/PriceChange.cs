@@ -17,6 +17,9 @@ namespace MarketOnline.Core.Entity
         public string priceChangePercent { get; set; }
         public string weightedAvgPrice { get; set; }
         public string prevClosePrice { get; set; }
+        /// <summary>
+        /// 当前价
+        /// </summary>
         public string lastPrice { get; set; }
         public string lastQty { get; set; }
         public string bidPrice { get; set; }
