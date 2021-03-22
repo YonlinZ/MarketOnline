@@ -1,6 +1,7 @@
 ﻿using Flurl.Http;
 using MarketOnline.Core.Entity;
 using MarketOnline.Core.Resource;
+using MarketOnline.Core.Util;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -22,6 +23,7 @@ namespace MarketOnline.Core.Infrastructure
 
         /// <summary>
         /// 获取所有的交易对
+        /// 请求权重 1
         /// </summary>
         /// <returns></returns>
         private async static Task GetAllSymbols()
@@ -31,18 +33,18 @@ namespace MarketOnline.Core.Infrastructure
             {
                 while (true)
                 {
-                    var res = await $"{ConstVar.BaseUrl}/exchangeInfo".GetAsync();
+                    var res = await $"{ConstVar.BaseUrl}/exchangeInfo".GetAsync(1);
                     switch (res.StatusCode)
                     {
                         case 200:
-                            StaticResource.ExchangeInfo = await res.GetJsonAsync<ExchangeInfo>();
-                            var symbols = StaticResource.ExchangeInfo.symbols
+                            PreloadResource.ExchangeInfo = await res.GetJsonAsync<ExchangeInfo>();
+                            var symbols = PreloadResource.ExchangeInfo.symbols
                                     .Where(s => s.symbol.EndsWith("USDT"))
                                     .Select(s => s.symbol);
-                            var except = symbols.Except(StaticResource.AllSymbols);
+                            var except = symbols.Except(PreloadResource.AllSymbols);
                             if (except.Any())
                             {
-                                StaticResource.AllSymbols.AddRange(except);
+                                PreloadResource.AllSymbols.AddRange(except);
                             }
                             Thread.Sleep(60 * 1000);
                             break;
@@ -63,10 +65,10 @@ namespace MarketOnline.Core.Infrastructure
         {
             await Task.Run(async () =>
             {
-                var res = await $"{ConstVar.BaseUrl}/ticker/24hr".GetJsonAsync<List<PriceChange>>();
-                StaticResource.PriceChanges = res;
+                var res = await $"{ConstVar.BaseUrl}/ticker/24hr".GetJsonAsync<List<PriceChange>>(40);
+                PreloadResource.PriceChanges = res;
                 // 对交易对排序
-                StaticResource.AllSymbols = StaticResource.AllSymbols.OrderByDescending(s =>
+                PreloadResource.AllSymbols = PreloadResource.AllSymbols.OrderByDescending(s =>
                     {
                         var item = res.FirstOrDefault(pc => pc.symbol == s);
                         if (item != null)
@@ -89,7 +91,7 @@ namespace MarketOnline.Core.Infrastructure
             {
                 var task = Task.Run(async () =>
                 {
-                    var res = await $"{ConstVar.BaseUrl}/klines?symbol=BTCUSDT&interval={interval}".GetAsync();
+                    var res = await $"{ConstVar.BaseUrl}/klines?symbol=BTCUSDT&interval={interval}".GetAsync(1);
                     if (res.StatusCode == 200)
                     {
                         var result = await res.GetJsonAsync<List<object[]>>();
@@ -103,7 +105,7 @@ namespace MarketOnline.Core.Infrastructure
                 taskList.Add(task);
             }
             Task.WaitAll(taskList.ToArray());
-            StaticResource.Klines[kline.Symbol] = kline;
+            PreloadResource.Klines[kline.Symbol] = kline;
         }
 
     }

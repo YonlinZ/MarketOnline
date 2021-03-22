@@ -1,6 +1,7 @@
 ﻿using MarketOnline.Core.Entity;
 using MarketOnline.Core.Infrastructure;
 using MarketOnline.Core.Resource;
+using MarketOnline.Core.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace MarketOnline.Test
                 limit = 1200
             };
 
-            StaticResource.ExchangeInfo.rateLimits = new Ratelimit[] { ratelimit };
+            PreloadResource.ExchangeInfo.rateLimits = new Ratelimit[] { ratelimit };
 
             while (true)
             {
