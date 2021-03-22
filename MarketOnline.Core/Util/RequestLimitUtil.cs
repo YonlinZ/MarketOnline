@@ -28,7 +28,7 @@ namespace MarketOnline.Core.Util
                 {
                     _requestTime = DateTime.Now;
                     _requestWeight = weight;
-                    Console.WriteLine($"#####周期开始时间：{_requestTime}, 当前权重：{_requestWeight}, 请求权重：{weight}");
+                    Console.WriteLine($"#####周期开始时间：{_requestTime}, 累计权重：{_requestWeight}, 请求权重：{weight}");
                     return;
                 }
                 var rateLimit = PreloadResource.ExchangeInfo.rateLimits.FirstOrDefault(x => x.rateLimitType == "REQUEST_WEIGHT");
@@ -37,19 +37,19 @@ namespace MarketOnline.Core.Util
                 {
                     _requestTime = DateTime.Now;
                     _requestWeight = weight;
-                    Console.WriteLine($"######周期开始时间：{_requestTime}, 当前权重：{_requestWeight}, 请求权重：{weight}");
+                    Console.WriteLine($"######周期开始时间：{_requestTime}, 累计权重：{_requestWeight}, 请求权重：{weight}");
                     return;
                 }
                 if (_requestWeight + weight < limit)
                 {
                     _requestWeight += weight;
-                    Console.WriteLine($"######周期开始时间：{_requestTime}, 当前权重：{_requestWeight}, 请求权重：{weight}");
+                    Console.WriteLine($"######周期开始时间：{_requestTime}, 累计权重：{_requestWeight}, 请求权重：{weight}");
                     return;
                 }
                 if (_requestWeight + weight > limit)
                 {
                     Console.WriteLine("超出请求限制：");
-                    Console.WriteLine($"周期开始时间：{_requestTime}, 当前权重：{_requestWeight}, 请求权重：{weight}");
+                    Console.WriteLine($"周期开始时间：{_requestTime}, 累计权重：{_requestWeight}, 请求权重：{weight}");
                     while (_requestTime.AddMinutes(rateLimit.intervalNum) >= DateTime.Now)
                     {
                         Console.WriteLine($"Sleep Start: {DateTime.Now}");
@@ -59,7 +59,7 @@ namespace MarketOnline.Core.Util
                     }
                     _requestTime = DateTime.Now;
                     _requestWeight = weight;
-                    Console.WriteLine($"########周期开始时间：{_requestTime}, 当前权重：{_requestWeight}, 请求权重：{weight}");
+                    Console.WriteLine($"########周期开始时间：{_requestTime}, 累计权重：{_requestWeight}, 请求权重：{weight}");
                     return;
                 }
                 return;
