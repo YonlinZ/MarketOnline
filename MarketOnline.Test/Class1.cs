@@ -1,11 +1,10 @@
 ﻿using MarketOnline.Core.Entity;
-using MarketOnline.Core.Infrastructure;
 using MarketOnline.Core.Resource;
+using MarketOnline.Core.Util;
 using System;
-using System.Security.Authentication;
-using System.Security.Cryptography.X509Certificates;
+using System.Collections.Generic;
 using System.Threading;
-using WebSocketSharp;
+using System.Threading.Tasks;
 
 namespace Example
 {
@@ -41,16 +40,34 @@ namespace Example
                 intervalNum = 1,
                 limit = 1200
             };
-            StaticResource.ExchangeInfo = new ExchangeInfo();
-            StaticResource.ExchangeInfo.rateLimits = new Ratelimit[] { ratelimit };
+            PreloadResource.ExchangeInfo = new ExchangeInfo();
+            PreloadResource.ExchangeInfo.rateLimits = new Ratelimit[] { ratelimit };
 
-            while (true)
+            //while (true)
+            //{
+            //    var random = new Random();
+            //    var r = random.Next(50);
+            //    RequestLimitUtil.RequestBlock(r);
+            //    Thread.Sleep(1000);
+            //}
+
+
+            var tslist = new List<Task>();
+
+            for (int i = 0; i < 1000; i++)
             {
-                var random = new Random();
-                var r = random.Next(50);
-                RequestLimitUtil.RequestBlock(r);
-                Thread.Sleep(1000);
+                var ts = new Task(() =>
+                {
+                    var random = new Random();
+                    var r = random.Next(50);
+                    RequestLimitUtil.RequestBlock(r);
+
+                });
+                tslist.Add(ts);
+                ts.Start();
             }
+
+            Console.ReadLine();
         }
     }
 

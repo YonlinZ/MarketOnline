@@ -10,10 +10,10 @@ namespace MarketOnline.Core.Resource
     /// <summary>
     /// 预加载的资源
     /// </summary>
-    public class StaticResource
+    public class PreloadResource
     {
         /// <summary>
-        /// 所有用usdt计价的交易对 264个
+        /// 所有用usdt计价的交易对 260+个
         /// </summary>
         public static List<string> AllSymbols { get; set; } = new List<string>();
         public static ExchangeInfo ExchangeInfo { get; set; }
