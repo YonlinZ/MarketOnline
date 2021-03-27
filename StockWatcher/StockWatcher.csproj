@@ -65,9 +65,6 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gma.UserActivityMonitor">
-      <HintPath>..\dll\Gma.UserActivityMonitor.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -89,6 +86,7 @@
       <DependentUpon>frmSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="INIHelper.cs" />
+    <Compile Include="KeyboardHook.cs" />
     <Compile Include="KeyHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
