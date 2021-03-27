@@ -16,7 +16,7 @@ namespace StockWatcher
         public static void Main(string[] args)
         {
             Console.WriteLine($"Windows 任务栏看盘神器 v1.0");
-            Console.WriteLine($"Email：admin@mruo.com");
+            //Console.WriteLine($"Email：admin@mruo.com");
             Console.WriteLine();
 
             var identity = System.Security.Principal.WindowsIdentity.GetCurrent();

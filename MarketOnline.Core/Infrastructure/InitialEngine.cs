@@ -46,7 +46,7 @@ namespace MarketOnline.Core.Infrastructure
                             {
                                 PreloadResource.AllSymbols.AddRange(except);
                             }
-                            Thread.Sleep(60 * 1000);
+                            Thread.Sleep(60 * 60 * 1000);// 一小时查询一次
                             break;
                         case 429:
                             break;

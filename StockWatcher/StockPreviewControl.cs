@@ -20,10 +20,10 @@ namespace StockWatcher
 
             this.ContextMenu = new ContextMenu(new MenuItem[]
             {
-                new MenuItem("联系作者", new EventHandler((s, e) =>
-                {
-                    Util.Info($"QQ: 491217650\r\nGithub: https://github.com/mrhuo\r\nEmail: admin@mrhuo.com", "联系作者");
-                })),
+                //new MenuItem("联系作者", new EventHandler((s, e) =>
+                //{
+                //    Util.Info($"QQ: 491217650\r\nGithub: https://github.com/mrhuo\r\nEmail: admin@mrhuo.com", "联系作者");
+                //})),
                 new MenuItem("设置", new EventHandler((s, e) =>
                 {
                     new frmSetting(this).ShowDialog();
