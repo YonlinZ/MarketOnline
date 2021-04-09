@@ -5,8 +5,6 @@ namespace StockWatcher
 {
     public class KeyHandler
     {
-        private static Keys _keyCache = 0;
-        private static DateTime _dt = DateTime.MinValue;
         public static void Start(Control control)
         {
             try
