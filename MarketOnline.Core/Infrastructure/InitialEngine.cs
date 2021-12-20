@@ -36,7 +36,7 @@ namespace MarketOnline.Core.Infrastructure
                 case 200:
                     PreloadResource.ExchangeInfo = await res.GetJsonAsync<ExchangeInfo>();
                     var symbols = PreloadResource.ExchangeInfo.symbols
-                            .Where(s => s.symbol.EndsWith("USDT"))
+                            .Where(s => s.symbol.EndsWith("USDT") && s.status == "TRADING")
                             .Select(s => s.symbol);
                     var except = symbols.Except(PreloadResource.AllSymbols);
                     if (except.Any())
@@ -50,7 +50,7 @@ namespace MarketOnline.Core.Infrastructure
                     break;
             }
 
-            
+
         }
 
 
@@ -134,7 +134,7 @@ namespace MarketOnline.Core.Infrastructure
                 else
                 {
                     var kline = new SymbolKlineSet(symbol);
-                    kline.IntervalKline[interval] = result; 
+                    kline.IntervalKline[interval] = result;
                     PreloadResource.Klines[symbol] = kline;
                 }
 
