@@ -14,45 +14,54 @@ namespace MarketOnline.Core.Infrastructure
         /// <summary>
         /// 启动
         /// </summary>
-        public static async void Start()
+        public static async Task Start()
         {
             await GetAllSymbols();
-            await GetKline();
-            await GetPriceChange();
+            GetAllSymbolsLoops();
+            //System.Console.WriteLine(PreloadResource.AllSymbols.Count);
         }
 
         /// <summary>
         /// 获取所有的交易对
-        /// 请求权重 1
+        /// 请求权重 10
         /// </summary>
         /// <returns></returns>
         private async static Task GetAllSymbols()
         {
             //var counter = 0;
-            await Task.Factory.StartNew(async () =>
+
+            var res = await $"{ConstVar.BaseUrl}/exchangeInfo".GetAsync(10);
+            switch (res.StatusCode)
+            {
+                case 200:
+                    PreloadResource.ExchangeInfo = await res.GetJsonAsync<ExchangeInfo>();
+                    var symbols = PreloadResource.ExchangeInfo.symbols
+                            .Where(s => s.symbol.EndsWith("USDT"))
+                            .Select(s => s.symbol);
+                    var except = symbols.Except(PreloadResource.AllSymbols);
+                    if (except.Any())
+                    {
+                        PreloadResource.AllSymbols.AddRange(except);
+                    }
+                    break;
+                case 429:
+                    break;
+                case 418:
+                    break;
+            }
+
+            
+        }
+
+
+        private static void GetAllSymbolsLoops()
+        {
+            Task.Factory.StartNew(async () =>
             {
                 while (true)
                 {
-                    var res = await $"{ConstVar.BaseUrl}/exchangeInfo".GetAsync(1);
-                    switch (res.StatusCode)
-                    {
-                        case 200:
-                            PreloadResource.ExchangeInfo = await res.GetJsonAsync<ExchangeInfo>();
-                            var symbols = PreloadResource.ExchangeInfo.symbols
-                                    .Where(s => s.symbol.EndsWith("USDT"))
-                                    .Select(s => s.symbol);
-                            var except = symbols.Except(PreloadResource.AllSymbols);
-                            if (except.Any())
-                            {
-                                PreloadResource.AllSymbols.AddRange(except);
-                            }
-                            Thread.Sleep(60 * 60 * 1000);// 一小时查询一次
-                            break;
-                        case 429:
-                            break;
-                        case 418:
-                            break;
-                    }
+                    await Task.Delay(60 * 60 * 1000);// 一小时查询一次
+                    await GetAllSymbols();
                 }
             }, TaskCreationOptions.LongRunning);
         }
@@ -106,6 +115,35 @@ namespace MarketOnline.Core.Infrastructure
             }
             Task.WaitAll(taskList.ToArray());
             PreloadResource.Klines[kline.Symbol] = kline;
+        }
+
+        /// <summary>
+        /// 获取指定交易对k线数据
+        /// </summary>
+        /// <returns></returns>
+        public static async Task GetKline(string symbol, string interval)
+        {
+            var res = await $"{ConstVar.BaseUrl}/klines?limit=1000&symbol={symbol}&interval={interval}".GetAsync(1);
+            if (res.StatusCode == 200)
+            {
+                var result = await res.GetJsonAsync<List<object[]>>();
+                if (PreloadResource.Klines.ContainsKey(symbol))
+                {
+                    PreloadResource.Klines[symbol].IntervalKline[interval] = result;
+                }
+                else
+                {
+                    var kline = new SymbolKlineSet(symbol);
+                    kline.IntervalKline[interval] = result; 
+                    PreloadResource.Klines[symbol] = kline;
+                }
+
+
+            }
+            else if (res.StatusCode == 429)
+            {
+                //break;
+            }
         }
 
     }
