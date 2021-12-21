@@ -23,7 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DapperEx">
+      <HintPath>..\lib\DapperEx\DapperEx.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Flurl, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Flurl.3.0.1\lib\net461\Flurl.dll</HintPath>
     </Reference>
@@ -60,6 +64,7 @@
     <Compile Include="Entity\PriceChange.cs" />
     <Compile Include="Entity\SymbolPrice.cs" />
     <Compile Include="Infrastructure\InitialEngine.cs" />
+    <Compile Include="Engine.cs" />
     <Compile Include="Util\FlurlUtil.cs" />
     <Compile Include="Util\RequestLimitUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

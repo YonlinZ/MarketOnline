@@ -1,10 +1,9 @@
-﻿using MarketOnline.Core.Infrastructure;
+﻿using MarketOnline.Core;
+using MarketOnline.Core.Infrastructure;
 using MarketOnline.Core.Resource;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace MarketOnline.Run
@@ -21,7 +20,7 @@ namespace MarketOnline.Run
             {
                 //var ts = InitialEngine.GetKline(symbol, "1d");
                 //tss.Add(ts);
-                InitialEngine.GetKline(symbol, "1d").Wait();
+                Engine.GetKline(symbol, "1d").Wait();
             }
             //Task.WaitAll(tss.ToArray());
             Console.WriteLine();
