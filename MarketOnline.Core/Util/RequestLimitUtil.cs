@@ -31,7 +31,7 @@ namespace MarketOnline.Core.Util
                     Console.WriteLine($"#####周期开始时间：{_requestTime}, 累计权重：{_requestWeight}, 请求权重：{weight}");
                     return;
                 }
-                var rateLimit = PreloadResource.ExchangeInfo.rateLimits.FirstOrDefault(x => x.rateLimitType == "REQUEST_WEIGHT");
+                var rateLimit = LoadedResource.ExchangeInfo.rateLimits.FirstOrDefault(x => x.rateLimitType == "REQUEST_WEIGHT");
                 var limit = rateLimit.limit - 100;
                 if (_requestTime.AddMinutes(rateLimit.intervalNum) < DateTime.Now)
                 {

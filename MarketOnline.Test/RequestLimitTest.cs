@@ -25,7 +25,7 @@ namespace MarketOnline.Test
                 limit = 1200
             };
 
-            PreloadResource.ExchangeInfo.rateLimits = new Ratelimit[] { ratelimit };
+            LoadedResource.ExchangeInfo.rateLimits = new Ratelimit[] { ratelimit };
 
             while (true)
             {

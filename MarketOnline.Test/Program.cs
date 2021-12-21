@@ -40,8 +40,8 @@ namespace Example
                 intervalNum = 1,
                 limit = 1200
             };
-            PreloadResource.ExchangeInfo = new ExchangeInfo();
-            PreloadResource.ExchangeInfo.rateLimits = new Ratelimit[] { ratelimit };
+            LoadedResource.ExchangeInfo = new ExchangeInfo();
+            LoadedResource.ExchangeInfo.rateLimits = new Ratelimit[] { ratelimit };
 
             //while (true)
             //{

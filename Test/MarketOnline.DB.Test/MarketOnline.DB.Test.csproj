@@ -4,17 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{08BAFBF3-53C9-407B-9A1D-D1657FE1DA58}</ProjectGuid>
+    <ProjectGuid>{3F9D72A4-6514-4D76-BF2C-3120373E44AA}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MarketOnline.Run</RootNamespace>
-    <AssemblyName>MarketOnline.Run</AssemblyName>
+    <RootNamespace>MarketOnline.DB.Test</RootNamespace>
+    <AssemblyName>MarketOnline.DB.Test</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,10 +22,11 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -50,11 +51,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MarketOnline.Core\MarketOnline.Core.csproj">
-      <Project>{7c77d3bb-44e4-49f1-b309-c1f6c882faab}</Project>
-      <Name>MarketOnline.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MarketOnline.DB\MarketOnline.DB.csproj">
+    <ProjectReference Include="..\..\MarketOnline.DB\MarketOnline.DB.csproj">
       <Project>{2a2dd657-c979-491e-bae6-5f1a28c1d143}</Project>
       <Name>MarketOnline.DB</Name>
     </ProjectReference>

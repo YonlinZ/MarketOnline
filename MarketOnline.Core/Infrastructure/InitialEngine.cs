@@ -2,6 +2,7 @@
 using MarketOnline.Core.Entity;
 using MarketOnline.Core.Resource;
 using MarketOnline.Core.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -11,6 +12,7 @@ namespace MarketOnline.Core.Infrastructure
 {
     public class InitialEngine
     {
+
         /// <summary>
         /// 启动
         /// </summary>
@@ -34,14 +36,14 @@ namespace MarketOnline.Core.Infrastructure
             switch (res.StatusCode)
             {
                 case 200:
-                    PreloadResource.ExchangeInfo = await res.GetJsonAsync<ExchangeInfo>();
-                    var symbols = PreloadResource.ExchangeInfo.symbols
+                    LoadedResource.ExchangeInfo = await res.GetJsonAsync<ExchangeInfo>();
+                    var symbols = LoadedResource.ExchangeInfo.symbols
                             .Where(s => s.symbol.EndsWith("USDT") && s.status == "TRADING")
                             .Select(s => s.symbol);
-                    var except = symbols.Except(PreloadResource.AllSymbols);
+                    var except = symbols.Except(LoadedResource.AllSymbols);
                     if (except.Any())
                     {
-                        PreloadResource.AllSymbols.AddRange(except);
+                        LoadedResource.AllSymbols.AddRange(except);
                     }
                     break;
                 case 429:
@@ -49,7 +51,8 @@ namespace MarketOnline.Core.Infrastructure
                 case 418:
                     break;
             }
-
+            LoadedResource.AllSymbols_UpdateTime = DateTime.Now;
+            LoadedResource.ExchangeInfo_UpdateTime = DateTime.Now;
 
         }
 
@@ -75,9 +78,9 @@ namespace MarketOnline.Core.Infrastructure
             await Task.Run(async () =>
             {
                 var res = await $"{ConstVar.BaseUrl}/ticker/24hr".GetJsonAsync<List<PriceChange>>(40);
-                PreloadResource.PriceChanges = res;
+                LoadedResource.PriceChanges = res;
                 // 对交易对排序
-                PreloadResource.AllSymbols = PreloadResource.AllSymbols.OrderByDescending(s =>
+                LoadedResource.AllSymbols = LoadedResource.AllSymbols.OrderByDescending(s =>
                     {
                         var item = res.FirstOrDefault(pc => pc.symbol == s);
                         if (item != null)
@@ -114,10 +117,10 @@ namespace MarketOnline.Core.Infrastructure
                 taskList.Add(task);
             }
             Task.WaitAll(taskList.ToArray());
-            PreloadResource.Klines[kline.Symbol] = kline;
+            LoadedResource.Klines[kline.Symbol] = kline;
         }
 
-        
+
 
     }
 }

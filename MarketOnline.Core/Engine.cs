@@ -14,23 +14,23 @@ namespace MarketOnline.Core
         /// 获取指定交易对k线数据，默认获取1000条
         /// </summary>
         /// <returns></returns>
-        public static async Task GetKline(string symbol, string interval)
+        public static async Task GetKline(string symbol, string interval, int number = 1000)
         {
-            var res = await $"{ConstVar.BaseUrl}/klines?limit=1000&symbol={symbol}&interval={interval}".GetAsync(1);
+            var res = await $"{ConstVar.BaseUrl}/klines?limit={number}&symbol={symbol}&interval={interval}".GetAsync(1);
             if (res.StatusCode == 200)
             {
                 var result = await res.GetJsonAsync<List<object[]>>();
-                if (PreloadResource.Klines.ContainsKey(symbol))
+                if (LoadedResource.Klines.ContainsKey(symbol))
                 {
-                    PreloadResource.Klines[symbol].IntervalKline[interval] = result;
+                    LoadedResource.Klines[symbol].IntervalKline[interval] = result;
                 }
                 else
                 {
                     var kline = new SymbolKlineSet(symbol);
                     kline.IntervalKline[interval] = result;
-                    PreloadResource.Klines[symbol] = kline;
+                    LoadedResource.Klines[symbol] = kline;
                 }
-
+                LoadedResource.Klines[symbol].UpdateTime = DateTime.Now;
 
             }
             else if (res.StatusCode == 429)

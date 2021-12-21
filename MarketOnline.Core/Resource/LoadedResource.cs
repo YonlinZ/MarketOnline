@@ -10,10 +10,13 @@ namespace MarketOnline.Core.Resource
     /// <summary>
     /// 预加载的资源
     /// </summary>
-    public class PreloadResource
+    public class LoadedResource
     {
+        public static DateTime AllSymbols_UpdateTime { get; internal set; }
+
+        public static DateTime ExchangeInfo_UpdateTime { get; internal set; }
         /// <summary>
-        /// 所有用usdt计价的交易对 260+个
+        /// 所有用usdt计价的交易对
         /// </summary>
         public static List<string> AllSymbols { get; set; } = new List<string>();
         public static ExchangeInfo ExchangeInfo { get; set; }

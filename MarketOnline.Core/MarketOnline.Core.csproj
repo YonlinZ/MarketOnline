@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -31,10 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DapperEx">
-      <HintPath>..\lib\DapperEx\DapperEx.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Flurl, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Flurl.3.0.1\lib\net461\Flurl.dll</HintPath>
     </Reference>
@@ -69,7 +66,7 @@
     <Compile Include="Util\RequestLimitUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource\ConstVar.cs" />
-    <Compile Include="Resource\PreloadResource.cs" />
+    <Compile Include="Resource\LoadedResource.cs" />
     <Compile Include="Resource\SymbolKlineSet.cs" />
   </ItemGroup>
   <ItemGroup>

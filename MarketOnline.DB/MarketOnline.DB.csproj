@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{08BAFBF3-53C9-407B-9A1D-D1657FE1DA58}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>MarketOnline.Run</RootNamespace>
-    <AssemblyName>MarketOnline.Run</AssemblyName>
+    <ProjectGuid>{2A2DD657-C979-491E-BAE6-5F1A28C1D143}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MarketOnline.DB</RootNamespace>
+    <AssemblyName>MarketOnline.DB</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,17 +21,22 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DapperEx">
+      <HintPath>..\lib\DapperEx\DapperEx.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,20 +47,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="ConstVar.cs" />
+    <Compile Include="DBHelper.cs" />
+    <Compile Include="GetSQL.cs" />
+    <Compile Include="Model\Kline.cs" />
+    <Compile Include="Model\Kline_Raw.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MarketOnline.Core\MarketOnline.Core.csproj">
       <Project>{7c77d3bb-44e4-49f1-b309-c1f6c882faab}</Project>
       <Name>MarketOnline.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MarketOnline.DB\MarketOnline.DB.csproj">
-      <Project>{2a2dd657-c979-491e-bae6-5f1a28c1d143}</Project>
-      <Name>MarketOnline.DB</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

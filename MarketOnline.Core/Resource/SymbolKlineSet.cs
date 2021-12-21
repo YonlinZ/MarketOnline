@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace MarketOnline.Core.Resource
@@ -6,7 +7,7 @@ namespace MarketOnline.Core.Resource
     public class SymbolKlineSet
     {
         public string Symbol { get; private set; }
-
+        public DateTime UpdateTime { get; set; }
         /// <summary>
         /// key: kline interval
         /// value: kline 
