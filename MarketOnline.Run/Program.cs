@@ -15,7 +15,7 @@ namespace MarketOnline.Run
 
         static async Task Main(string[] args)
         {
-            F2().Wait();
+            await F2();
 
             Console.ReadLine();
         }
