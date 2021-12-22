@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MarketOnline.DB
 {
-    class GetSQL
+    class CommonHelper
     {
         /// <summary>
         /// 获取生成Kline/Kline_Raw表的sql
@@ -25,6 +25,14 @@ namespace MarketOnline.DB
 
         }
 
+        internal static string GetTableName(string symbol, string interval, bool isRaw = false)
+        {
+            if (isRaw)
+            {
+                return $"C_{symbol}_{interval}_Kline_Raw";
+            }
+            return $"C_{symbol}_{interval}_Kline";
+        }
 
     }
 }

@@ -15,8 +15,9 @@ namespace MarketOnline.Run
 
         static async Task Main(string[] args)
         {
+            Console.WriteLine("开始！");
             await F2();
-
+            var r = await DBHelper.GetKlineRaw("BTCUSDT", "1d");
             Console.ReadLine();
         }
 
@@ -59,7 +60,7 @@ namespace MarketOnline.Run
             {
                 try
                 {
-                DBHelper.UpdateKline(symbol, "1d").Wait();
+                    DBHelper.UpdateKline(symbol, "1d").Wait();
 
                 }
                 catch (Exception ex)
