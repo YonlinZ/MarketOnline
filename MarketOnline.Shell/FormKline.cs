@@ -29,7 +29,7 @@ namespace MarketOnline.Shell
         private void InitControls()
         {
             BindComboBox();
-            foreach (var item in ConstVar.KlineIntervals)
+            foreach (var item in Core.Resource.ConstVar.KlineIntervals)
             {
                 if (item == "1d")
                 {
@@ -89,7 +89,7 @@ namespace MarketOnline.Shell
                 }
                 if (LoadedResource.AllSymbols.Contains(symbol))
                 {
-                    var klines = await DBHelper.GetKline(symbol, btn.Text);
+                    var klines = await DBHelper.GetKlineDataTable(symbol, btn.Text);
                     dgv.DataSource = klines;
                 }
                 else
@@ -98,11 +98,11 @@ namespace MarketOnline.Shell
                     if (result == DialogResult.Yes)
                     {
                         await DBHelper.UpdateKline(symbol, btn.Text);
-                        var klines = await DBHelper.GetKline(symbol, btn.Text);
+                        var klines = await DBHelper.GetKlineDataTable(symbol, btn.Text);
                         dgv.DataSource = klines;
                     }
                 }
-                StartUp.Shell.Status.Text = $"当前交易对：{symbol}_1d。";
+                ConstVar.Shell.Status.Text = $"当前交易对：{symbol}_1d。";
             }
             catch (Exception ex)
             {
@@ -117,7 +117,7 @@ namespace MarketOnline.Shell
                 Enabled = false;
                 foreach (var symbol in LoadedResource.AllSymbols)
                 {
-                    StartUp.Shell.Status.Text = $"正在更新交易对：{symbol}_1d";
+                    ConstVar.Shell.Status.Text = $"正在更新交易对：{symbol}_1d";
                     await DBHelper.UpdateKline(symbol, "1d");
 
                 }
@@ -125,7 +125,7 @@ namespace MarketOnline.Shell
             finally
             {
                 Enabled = false;
-                StartUp.Shell.Status.Text = "交易对更新完成。";
+                ConstVar.Shell.Status.Text = "交易对更新完成。";
 
             }
 
@@ -140,12 +140,18 @@ namespace MarketOnline.Shell
                 comboBox1.Focus();
                 return;
             }
-            StartUp.Shell.Status.Text = $"正在更新交易对：{symbol}_1d";
+            ConstVar.Shell.Status.Text = $"正在更新交易对：{symbol}_1d";
 
             await DBHelper.UpdateKline(symbol, "1d");
-            var klines = await DBHelper.GetKline(symbol, "1d");
+            var klines = await DBHelper.GetKlineDataTable(symbol, "1d");
             dgv.DataSource = klines;
-            StartUp.Shell.Status.Text = $"交易对：{symbol}_1d 更新完成。";
+            ConstVar.Shell.Status.Text = $"交易对：{symbol}_1d 更新完成。";
         }
+
+        private void dgv_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            //dgv.Sort(dgv.Columns[e.ColumnIndex], ListSortDirection.Ascending);
+        }
+ 
     }
 }

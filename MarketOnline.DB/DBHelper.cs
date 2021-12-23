@@ -1,8 +1,10 @@
 ﻿using DapperEx;
 using MarketOnline.Core;
+using MarketOnline.Core.Resource;
 using MarketOnline.DB.Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -99,6 +101,22 @@ namespace MarketOnline.DB
 
         }
 
+        public static Task<DataTable> GetKlineDataTable(string symbol, string interval)
+        {
+            return Task.Run(() =>
+            {
+                //return DapperUtil.GetInstances<Kline>(DataBaseType.SQLITE, ConstVar.Conn, $"select * from {CommonHelper.GetTableName(symbol, interval)}");
+                return DapperUtil.GetTable(DataBaseType.SQLITE, ConstVar.Conn, $"select * from {CommonHelper.GetTableName(symbol, interval)}");
+            });
+        }
+
+        public static Task<DataTable> GetKlineRawDataTable(string symbol, string interval)
+        {
+            return Task.Run(() =>
+            {
+                return DapperUtil.GetTable(DataBaseType.SQLITE, ConstVar.Conn, $"select * from {CommonHelper.GetTableName(symbol, interval, true)}");
+            });
+        }
         public static Task<IEnumerable<Kline>> GetKline(string symbol, string interval)
         {
             return Task.Run(() =>
@@ -116,5 +134,43 @@ namespace MarketOnline.DB
         }
 
 
+        public static Task<DataTable> GetKlineAna(string symbol, string interval)
+        {
+            return Task.Run(() =>
+            {
+                var tableName = CommonHelper.GetTableName(symbol, interval);
+
+                var sql = $@"select '{symbol}' Symbol, a.Close, a.OpenTime, b.Low, b.Low_Time, c.High, c.High_Time,printf(' % .2f', (b.Low-a.Close)/a.Close * 100) [Low/Close], printf(' % .2f', (c.High-a.Close)/a.Close * 100) [High/Close],d.DateDiff from (
+
+                select Close, Opentime from {tableName} where opentime =(select  min(opentime) from {tableName})) a cross join
+ 
+                (select Low, opentime   Low_Time  from {tableName} where low =(select  min(low) from {tableName} where id<>(SELECT CASE count(1) WHEN 1 THEN -1 ELSE min(id) END from {tableName})) limit 1) b cross join
+ 
+                (select High, opentime High_Time from {tableName} where high =(select  max(high) from {tableName}) limit 1) c cross join
+
+                (select julianday('now','start of day') - (select julianday(min(OpenTime),'start of day') from {tableName}) + 1 DateDiff) d;";
+
+
+                return DapperUtil.GetTable(DataBaseType.SQLITE, ConstVar.Conn, sql);
+            });
+        }
+        public static async Task<DataTable> GetAllKlineAna()
+        {
+            var ds = new DataSet();
+            DataTable newdt = null;
+            foreach (var symbol in LoadedResource.AllSymbols)
+            {
+                var data = await GetKlineAna(symbol, "1d");
+                ds.Tables.Add(data);
+            }
+            newdt = ds.Tables[0].Clone();
+
+            foreach (DataTable dt in ds.Tables)
+            {
+                newdt.ImportRow(dt.Rows[0]);
+            }
+
+            return newdt;
+        }
     }
 }
