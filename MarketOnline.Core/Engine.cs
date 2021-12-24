@@ -38,5 +38,11 @@ namespace MarketOnline.Core
                 //break;
             }
         }
+
+        public static async Task<bool> TestBinanceNet()
+        {
+            var res = await $"{ConstVar.BaseUrl}/ping".GetAsync(1);
+            return res.StatusCode == 200;
+        }
     }
 }

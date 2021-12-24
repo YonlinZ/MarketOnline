@@ -13,13 +13,13 @@ namespace MarketOnline.Shell
     {
         internal static async Task Start()
         {
-            await InitialEngine.Start();
 
 
             CacheForm<FormKline>();
             CacheForm<FormAnalysis>();
-            ConstVar.Shell = new Shell();
-            Application.Run(ConstVar.Shell);
+            Utils.Shell = new Shell();
+            Application.Run(Utils.Shell);
+            await InitialEngine.Start();
 
         }
         private static Form CacheForm<T>() where T : Form, new()
@@ -27,7 +27,7 @@ namespace MarketOnline.Shell
             return MemoryCacheUtil.GetOrAddCacheItem<Form>(typeof(T).Name, () =>
             {
                 var form = new T();
-                form.Owner = ConstVar.Shell;
+                form.Owner = Utils.Shell;
                 //form.Dock = DockStyle.Fill;
                 form.TopLevel = false;
                 return form;

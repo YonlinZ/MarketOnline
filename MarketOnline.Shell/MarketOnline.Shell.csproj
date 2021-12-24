@@ -7,7 +7,7 @@
     <ProjectGuid>{6DADD27A-852E-4ED8-97D0-44A151064B1C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>MarketOnline.Shell</RootNamespace>
-    <AssemblyName>MarketOnline.Shell</AssemblyName>
+    <AssemblyName>MarketOnline.Binance</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -35,8 +35,12 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Bitcoin.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,7 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConstVar.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="FormAnalysis.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,6 +66,7 @@
     <Compile Include="FormKline.Designer.cs">
       <DependentUpon>FormKline.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\MiniTiker.cs" />
     <Compile Include="Shell.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,6 +76,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartUp.cs" />
+    <Compile Include="WebSocketClient.cs" />
     <EmbeddedResource Include="FormAnalysis.resx">
       <DependentUpon>FormAnalysis.cs</DependentUpon>
     </EmbeddedResource>
@@ -115,6 +121,18 @@
       <Project>{2a2dd657-c979-491e-bae6-5f1a28c1d143}</Project>
       <Name>MarketOnline.DB</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="a3xf8-qukdb-001.ico" />
+    <Content Include="Bitcoin.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="WebSocketSharp-netstandard">
+      <Version>1.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -92,7 +92,7 @@ namespace MarketOnline.Shell
                 }
                 finally
                 {
-                    Application.Exit();
+                    //Application.Exit();
                 }
             }
         }

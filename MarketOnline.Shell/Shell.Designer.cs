@@ -29,6 +29,7 @@ namespace MarketOnline.Shell
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Shell));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.klineMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -65,7 +66,7 @@ namespace MarketOnline.Shell
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 25);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 425);
+            this.panel1.Size = new System.Drawing.Size(800, 403);
             this.panel1.TabIndex = 1;
             // 
             // panel2
@@ -79,8 +80,10 @@ namespace MarketOnline.Shell
             // 
             // statusStrip1
             // 
+            this.statusStrip1.AutoSize = false;
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Status});
+            this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.statusStrip1.Location = new System.Drawing.Point(0, 428);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(800, 22);
@@ -90,7 +93,9 @@ namespace MarketOnline.Shell
             // Status
             // 
             this.Status.Name = "Status";
-            this.Status.Size = new System.Drawing.Size(0, 17);
+            this.Status.Size = new System.Drawing.Size(44, 17);
+            this.Status.Text = "状态栏";
+            this.Status.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // AnaMenu
             // 
@@ -104,13 +109,13 @@ namespace MarketOnline.Shell
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.statusStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Shell";
-            this.ShowIcon = false;
             this.Text = "MarketOnline";
             this.SizeChanged += new System.EventHandler(this.Shell_SizeChanged);
             this.menuStrip1.ResumeLayout(false);

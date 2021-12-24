@@ -102,7 +102,7 @@ namespace MarketOnline.Shell
                         dgv.DataSource = klines;
                     }
                 }
-                ConstVar.Shell.Status.Text = $"当前交易对：{symbol}_1d。";
+                Utils.Shell.Status.Text = $"当前交易对：{symbol}_1d。";
             }
             catch (Exception ex)
             {
@@ -117,7 +117,7 @@ namespace MarketOnline.Shell
                 Enabled = false;
                 foreach (var symbol in LoadedResource.AllSymbols)
                 {
-                    ConstVar.Shell.Status.Text = $"正在更新交易对：{symbol}_1d";
+                    Utils.Shell.Status.Text = $"正在更新交易对：{symbol}_1d";
                     await DBHelper.UpdateKline(symbol, "1d");
 
                 }
@@ -125,7 +125,7 @@ namespace MarketOnline.Shell
             finally
             {
                 Enabled = false;
-                ConstVar.Shell.Status.Text = "交易对更新完成。";
+                Utils.Shell.Status.Text = "交易对更新完成。";
 
             }
 
@@ -140,12 +140,12 @@ namespace MarketOnline.Shell
                 comboBox1.Focus();
                 return;
             }
-            ConstVar.Shell.Status.Text = $"正在更新交易对：{symbol}_1d";
+            Utils.Shell.Status.Text = $"正在更新交易对：{symbol}_1d";
 
             await DBHelper.UpdateKline(symbol, "1d");
             var klines = await DBHelper.GetKlineDataTable(symbol, "1d");
             dgv.DataSource = klines;
-            ConstVar.Shell.Status.Text = $"交易对：{symbol}_1d 更新完成。";
+            Utils.Shell.Status.Text = $"交易对：{symbol}_1d 更新完成。";
         }
 
         private void dgv_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)

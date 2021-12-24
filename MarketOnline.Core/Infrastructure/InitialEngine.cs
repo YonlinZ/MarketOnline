@@ -20,6 +20,7 @@ namespace MarketOnline.Core.Infrastructure
         {
             await GetAllSymbols();
             GetAllSymbolsLoops();
+            await GetPriceChange();
             //System.Console.WriteLine(PreloadResource.AllSymbols.Count);
         }
 

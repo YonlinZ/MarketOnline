@@ -24,16 +24,6 @@ namespace MarketOnline.Shell
             klineMenu.Tag = MemoryCacheUtil.GetCacheItem<Form>(nameof(FormKline));
             AnaMenu.Tag = MemoryCacheUtil.GetCacheItem<Form>(nameof(FormAnalysis));
         }
-        private void klineMenu_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void AnaMenu_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void MenuClick(object sender, EventArgs e)
         {
             _currentForm?.Hide();

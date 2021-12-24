@@ -47,7 +47,7 @@ namespace MarketOnline.Shell
             this.flowLayoutPanel1.Controls.Add(this.btnUpdateOne);
             this.flowLayoutPanel1.Controls.Add(this.btnUpdateAll);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 32);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 26);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(800, 32);
             this.flowLayoutPanel1.TabIndex = 0;
@@ -78,7 +78,7 @@ namespace MarketOnline.Shell
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(800, 32);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(800, 26);
             this.flowLayoutPanel2.TabIndex = 1;
             // 
             // comboBox1
@@ -95,9 +95,9 @@ namespace MarketOnline.Shell
             // 
             this.panel1.Controls.Add(this.dgv);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 64);
+            this.panel1.Location = new System.Drawing.Point(0, 58);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 386);
+            this.panel1.Size = new System.Drawing.Size(800, 392);
             this.panel1.TabIndex = 2;
             // 
             // dgv
@@ -111,7 +111,7 @@ namespace MarketOnline.Shell
             this.dgv.Name = "dgv";
             this.dgv.ReadOnly = true;
             this.dgv.RowTemplate.Height = 23;
-            this.dgv.Size = new System.Drawing.Size(800, 386);
+            this.dgv.Size = new System.Drawing.Size(800, 392);
             this.dgv.TabIndex = 0;
             this.dgv.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgv_ColumnHeaderMouseClick);
             // 
