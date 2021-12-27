@@ -15,6 +15,8 @@ namespace MarketOnline.Shell
 {
     public partial class FormAnalysis : Form
     {
+        const float BORDER_WIDTH = 2f;                                          // specify the width of selection border  
+
         public FormAnalysis()
         {
             InitializeComponent();
@@ -47,9 +49,44 @@ namespace MarketOnline.Shell
                 return;
             }
             // 跌幅大于40%
-            if (double.Parse(dgv.Rows[e.RowIndex].Cells["Low/Close"].Value.ToString()) < -39.999)
+            if ((double)dgv.Rows[e.RowIndex].Cells["Low/Close"].Value < -0.39999)
             {
                 dgv.Rows[e.RowIndex].Cells["Low/Close"].Style.BackColor = Color.Tomato;
+            }
+            // 现价低于最低价 40%
+            if (((double)dgv.Rows[e.RowIndex].Cells["Price"].Value) / ((double)dgv.Rows[e.RowIndex].Cells["Close"].Value) < 0.6)
+            {
+                dgv.Rows[e.RowIndex].Cells["Price"].Style.BackColor = Color.Tomato;
+                dgv.Rows[e.RowIndex].Cells["Price/Close"].Style.BackColor = Color.Tomato;
+            }
+
+            // 选中行样式
+            Rectangle rowRect;                                                 // a selection rectangle  
+            DataGridViewElementStates state;
+
+            state = e.State & DataGridViewElementStates.Selected;              // only paint on selected row  
+            if (state == DataGridViewElementStates.Selected)
+            {
+                int iBorder = Convert.ToInt32(BORDER_WIDTH);                   // calculate columns width  
+                int columnsWidth = dgv.Columns.GetColumnsWidth(DataGridViewElementStates.Visible);
+                //int xStart = dgv.RowHeadersWidth;
+                int xStart = 0;
+
+                // need do calculate the clipping rectangle, because you can't use e.RowBounds  
+                rowRect =
+                   new Rectangle
+                   (
+                       xStart,                                                 // start after the row header  
+                       e.RowBounds.Top + iBorder - 1,                          // at the top of the row  
+                       columnsWidth - dgv.HorizontalScrollingOffset + 1,  // get the visible part of the row  
+                       e.RowBounds.Height - iBorder                            // get the row's height  
+                    );
+
+                // draw the border  
+                using (Pen pen = new Pen(Color.Black, BORDER_WIDTH))
+                {
+                    e.Graphics.DrawRectangle(pen, rowRect);                    // you can't use e.RowBounds here!  
+                }
             }
         }
         /// <summary>
@@ -71,6 +108,8 @@ namespace MarketOnline.Shell
                         if (price != null)
                         {
                             row["Price"] = double.Parse(price);
+                            row["Price/Close"] = (double.Parse(price) - (double)row["Close"]) / (double)row["Close"];
+
                         }
                     }
                     catch (Exception ex)
@@ -194,5 +233,36 @@ namespace MarketOnline.Shell
             }
         }
 
+        private void dgv_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            DataGridViewElementStates state;
+
+            state = e.State & DataGridViewElementStates.Selected;
+
+            if (state == DataGridViewElementStates.Selected)
+            {
+                e.PaintParts &=                                                // prevent the grid from automatically      
+               ~(                                                              // painting the selection background     
+                   DataGridViewPaintParts.Focus |
+                   DataGridViewPaintParts.SelectionBackground
+                );
+            }
+        }
+
+        private void dgv_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            var name = dgv.Columns[e.ColumnIndex].Name;
+            if (name == "Close" || name == "Low" || name == "High" || name == "Price")
+            {
+                e.CellStyle.Format = "#########0.##########";
+
+
+            }
+            else if (name == "Low/Close" || name == "High/Close" || name == "Price/Close")
+            {
+                e.CellStyle.Format = "P";
+
+            }
+        }
     }
 }

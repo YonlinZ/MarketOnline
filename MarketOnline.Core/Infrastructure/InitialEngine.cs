@@ -39,7 +39,7 @@ namespace MarketOnline.Core.Infrastructure
                 case 200:
                     LoadedResource.ExchangeInfo = await res.GetJsonAsync<ExchangeInfo>();
                     var symbols = LoadedResource.ExchangeInfo.symbols
-                            .Where(s => s.symbol.EndsWith("USDT") && s.status == "TRADING")
+                            .Where(s => s.symbol.EndsWith("USDT") && s.status == "TRADING" && s.permissions.Contains("SPOT"))
                             .Select(s => s.symbol);
                     var except = symbols.Except(LoadedResource.AllSymbols);
                     if (except.Any())

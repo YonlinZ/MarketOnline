@@ -140,7 +140,7 @@ namespace MarketOnline.DB
             {
                 var tableName = CommonHelper.GetTableName(symbol, interval);
 
-                var sql = $@"select d.DateDiff 上币天数, '{symbol}' 交易对, a.Close, a.OpenTime, b.Low, b.Low_Time,printf(' % .2f', (b.Low-a.Close)/a.Close * 100) [Low/Close], c.High, c.High_Time, printf(' % .2f', (c.High-a.Close)/a.Close * 100) [High/Close], -1.0 Price from (
+                var sql = $@"select d.DateDiff 上币天数, '{symbol}' 交易对, a.Close, a.OpenTime, b.Low, b.Low_Time,(b.Low-a.Close)/a.Close [Low/Close], c.High, c.High_Time, (c.High-a.Close)/a.Close [High/Close], -1.0 Price ,-1.0 [Price/Close] from (
 
                 select Close, Opentime from {tableName} where opentime =(select  min(opentime) from {tableName})) a cross join
  

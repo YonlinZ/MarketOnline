@@ -13,13 +13,13 @@ namespace MarketOnline.Shell
     {
         internal static async Task Start()
         {
+            await InitialEngine.Start();
 
 
             CacheForm<FormKline>();
             CacheForm<FormAnalysis>();
             Utils.Shell = new Shell();
             Application.Run(Utils.Shell);
-            await InitialEngine.Start();
 
         }
         private static Form CacheForm<T>() where T : Form, new()

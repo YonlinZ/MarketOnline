@@ -90,6 +90,9 @@ namespace MarketOnline.Shell
                 if (LoadedResource.AllSymbols.Contains(symbol))
                 {
                     var klines = await DBHelper.GetKlineDataTable(symbol, btn.Text);
+                    //var klines = await DBHelper.GetKline(symbol, btn.Text);
+                    //var k = new BindingList<DB.Model.Kline>(klines.ToList());
+
                     dgv.DataSource = klines;
                 }
                 else
@@ -124,7 +127,7 @@ namespace MarketOnline.Shell
             }
             finally
             {
-                Enabled = false;
+                Enabled = true;
                 Utils.Shell.Status.Text = "交易对更新完成。";
 
             }
