@@ -1,12 +1,9 @@
 ﻿using DapperEx;
 using MarketOnline.Core;
-using MarketOnline.Core.Resource;
 using MarketOnline.DB.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MarketOnline.DB
@@ -47,10 +44,31 @@ namespace MarketOnline.DB
                 try
                 {
                     tran.BeginTransaction();
-                    tran.Execute($"delete FROM  {klineTableName}");
-                    tran.Execute($"delete FROM  {klineRawTableName}");
+
+                    var maxDt = string.Empty;
+                    var maxDatestamp = 0L;
+                    if (count > 0)
+                    {
+                        maxDt = DapperUtil.GetScalar<string>(DataBaseType.SQLITE, ConstVar.Conn, $"select max(opentime) from {klineTableName}");
+                        maxDatestamp = DapperUtil.GetScalar<long>(DataBaseType.SQLITE, ConstVar.Conn, $"select max(OpenTimestamp) from {klineRawTableName}");
+                        // 删除最后一条数据
+                        tran.Execute($"delete FROM  {klineTableName} where OpenTime ='{maxDt}'");
+                        tran.Execute($"delete FROM  {klineRawTableName}  where OpenTimestamp ='{maxDatestamp}'");
+                    }
+
+
+
+
                     foreach (var k in kline)
                     {
+                        if (count > 0)
+                        {
+                            // 插入最新数据
+                            var timestamp = long.Parse(k[0].ToString());
+                            if (timestamp < maxDatestamp) continue;
+
+                        }
+
                         var sql = $@"insert into {klineTableName}(
                                     OpenTime                ,
                                     Open                    ,
@@ -154,6 +172,6 @@ namespace MarketOnline.DB
                 return DapperUtil.GetTable(DataBaseType.SQLITE, ConstVar.Conn, sql);
             });
         }
-        
+
     }
 }
