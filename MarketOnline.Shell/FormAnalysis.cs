@@ -180,7 +180,7 @@ namespace MarketOnline.Shell
             };
             WebSocketClient.Client.OnClose += (sender, e) =>
             {
-                Utils.SetStatus("WebSocket 关闭成功。");
+                Utils.SetStatus("WebSocket 关闭成功。" + e.Reason);
                 button2.Text = "连接WebSocket";
             };
 
