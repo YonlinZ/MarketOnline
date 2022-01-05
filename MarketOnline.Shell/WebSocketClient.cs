@@ -8,9 +8,13 @@ using WebSocketSharp;
 
 namespace MarketOnline.Shell
 {
-    public class WebSocketClient
+    public sealed class WebSocketClient
     {
         public static WebSocket Client;
+        private WebSocketClient()
+        {
+
+        }
 
         static WebSocketClient()
         {
@@ -29,7 +33,21 @@ namespace MarketOnline.Shell
             if (!string.IsNullOrWhiteSpace(proxyUrl))
             {
                 Client.SetProxy(ConfigurationManager.AppSettings["ProxyUrl"], ConfigurationManager.AppSettings["ProxyUsername"], ConfigurationManager.AppSettings["ProxyPassword"]);
+                //_ = Ping();
             }
+        }
+
+        private static async Task Ping()
+        {
+            //await Task.Factory.StartNew(async () =>
+            //{
+            //    while (true)
+            //    {
+            //        await Task.Delay(1000 * 10);
+            //        System.Diagnostics.Debug.WriteLine("Ping 一下！");
+            //        Client.p();
+            //    }
+            //}, TaskCreationOptions.LongRunning);
         }
     }
 }

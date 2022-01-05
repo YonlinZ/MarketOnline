@@ -113,25 +113,30 @@ namespace MarketOnline.Shell
             }
         }
 
-        private async void btnUpdateAll_Click(object sender, EventArgs e)
+        private void btnUpdateAll_Click(object sender, EventArgs e)
         {
+            Task ts = null;
             try
             {
                 Enabled = false;
-                foreach (var symbol in LoadedResource.AllSymbols)
+                ts = Task.Run(() =>
                 {
-                    Utils.Shell.Status.Text = $"正在更新交易对：{symbol}_1d";
-                    await DBHelper.UpdateKline(symbol, "1d");
-
-                }
+                    var tslist = new List<Task>();
+                    foreach (var symbol in LoadedResource.AllSymbols)
+                    {
+                        var temp = DBHelper.UpdateKline(symbol, "1d").ContinueWith(ac =>
+                        {
+                            Utils.SetStatus($"交易对：{symbol}_1d 更新完成");
+                        });
+                        tslist.Add(temp);
+                    }
+                    Task.WhenAll(tslist.ToArray());
+                });
             }
             finally
             {
-                Enabled = true;
-                Utils.Shell.Status.Text = "交易对更新完成。";
-
+                ts.ContinueWith(ac => Invoke((Action)(() => Enabled = true)));
             }
-
         }
 
         private async void btnUpdateOne_Click(object sender, EventArgs e)
@@ -155,6 +160,6 @@ namespace MarketOnline.Shell
         {
             //dgv.Sort(dgv.Columns[e.ColumnIndex], ListSortDirection.Ascending);
         }
- 
+
     }
 }
