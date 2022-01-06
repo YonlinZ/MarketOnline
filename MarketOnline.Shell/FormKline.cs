@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -116,6 +117,8 @@ namespace MarketOnline.Shell
         private void btnUpdateAll_Click(object sender, EventArgs e)
         {
             Task ts = null;
+            var sw = new Stopwatch();
+            sw.Start();
             try
             {
                 Enabled = false;
@@ -131,11 +134,16 @@ namespace MarketOnline.Shell
                         tslist.Add(temp);
                     }
                     Task.WhenAll(tslist.ToArray());
+                    sw.Stop();
                 });
             }
             finally
             {
-                ts.ContinueWith(ac => Invoke((Action)(() => Enabled = true)));
+                ts.ContinueWith(ac => Invoke((Action)(() =>
+                {
+                    Enabled = true;
+                    Debug.WriteLine($"耗时：{sw.ElapsedMilliseconds / 1000.0} 秒。");
+                })));
             }
         }
 

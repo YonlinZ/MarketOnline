@@ -12,7 +12,7 @@ namespace MarketOnline.Shell
 
         public static void SetStatus(string msg)
         {
-            Shell.BeginInvoke((Action)(() =>
+            Shell.Invoke((Action)(() =>
             {
                 Shell.Status.Text = msg;
             }));

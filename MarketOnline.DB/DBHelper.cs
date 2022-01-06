@@ -18,6 +18,8 @@ namespace MarketOnline.DB
         {
             var klineTableName = CommonHelper.GetTableName(symbol, interval);
             var klineRawTableName = CommonHelper.GetTableName(symbol, interval, true);
+            var wal = "PRAGMA journal_mode=WAL; ";
+            DapperUtil.Execute(DataBaseType.SQLITE, ConstVar.Conn, wal);
             var sql1 = $"SELECT count(1) FROM sqlite_master WHERE type='table' and tbl_name ='{klineTableName}'";
             var count = DapperUtil.GetScalar<int>(DataBaseType.SQLITE, ConstVar.Conn, sql1);
             if (count == 0) // Kline 表不存在

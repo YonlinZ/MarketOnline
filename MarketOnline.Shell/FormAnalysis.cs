@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,8 @@ namespace MarketOnline.Shell
     public partial class FormAnalysis : Form
     {
         const float BORDER_WIDTH = 2f;                                          // specify the width of selection border  
-
+        const string DEFAULTTEXT = "过滤";
+        private string _lastText = string.Empty;
         public FormAnalysis()
         {
             InitializeComponent();
@@ -25,7 +27,8 @@ namespace MarketOnline.Shell
 
         private void InitControls()
         {
-
+            txtFilter.Text = DEFAULTTEXT;
+            txtFilter.ForeColor = SystemColors.ControlLight;
         }
 
         private async void FormAnalysis_Shown(object sender, EventArgs e)
@@ -262,6 +265,44 @@ namespace MarketOnline.Shell
             {
                 e.CellStyle.Format = "P";
 
+            }
+        }
+
+        private void txtFilter_TextChanged(object sender, EventArgs e)
+        {
+            var dt = dgv.DataSource as DataTable;
+
+            if (string.IsNullOrWhiteSpace(_lastText) && txtFilter.Text != DEFAULTTEXT)//突出显示
+            {
+                txtFilter.ForeColor = Color.Black;
+                _lastText = DEFAULTTEXT;
+                txtFilter.Text = txtFilter.Text.Replace(DEFAULTTEXT, string.Empty);
+                txtFilter.SelectionStart = txtFilter.TextLength;
+
+            }
+
+            if (_lastText == DEFAULTTEXT && string.IsNullOrWhiteSpace(txtFilter.Text))//恢复默认
+            {
+                txtFilter.Text = DEFAULTTEXT;
+                txtFilter.ForeColor = SystemColors.ControlLight;
+                _lastText = string.Empty;
+            }
+             
+            if (string.IsNullOrWhiteSpace(txtFilter.Text.Trim())|| txtFilter.Text.Trim() == DEFAULTTEXT)
+            {
+                dt.DefaultView.RowFilter = "";
+            }
+            else
+            {
+                dt.DefaultView.RowFilter = $"交易对 LIKE '*{txtFilter.Text}*'";
+            }
+        }
+
+        private void txtFilter_Click(object sender, EventArgs e)
+        {
+            if (txtFilter.Text == DEFAULTTEXT)
+            {
+                txtFilter.SelectAll();
             }
         }
     }
