@@ -271,7 +271,7 @@ namespace MarketOnline.Shell
         private void txtFilter_TextChanged(object sender, EventArgs e)
         {
             var dt = dgv.DataSource as DataTable;
-
+            if (dt == null) return;
             if (string.IsNullOrWhiteSpace(_lastText) && txtFilter.Text != DEFAULTTEXT)//突出显示
             {
                 txtFilter.ForeColor = Color.Black;
@@ -287,8 +287,8 @@ namespace MarketOnline.Shell
                 txtFilter.ForeColor = SystemColors.ControlLight;
                 _lastText = string.Empty;
             }
-             
-            if (string.IsNullOrWhiteSpace(txtFilter.Text.Trim())|| txtFilter.Text.Trim() == DEFAULTTEXT)
+
+            if (string.IsNullOrWhiteSpace(txtFilter.Text.Trim()) || txtFilter.Text.Trim() == DEFAULTTEXT)
             {
                 dt.DefaultView.RowFilter = "";
             }
