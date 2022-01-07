@@ -133,7 +133,7 @@ namespace MarketOnline.Shell
                         });
                         tslist.Add(temp);
                     }
-                    Task.WhenAll(tslist.ToArray());
+                    Task.WhenAll(tslist);
                     sw.Stop();
                 });
             }
