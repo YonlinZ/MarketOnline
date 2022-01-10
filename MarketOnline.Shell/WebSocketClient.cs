@@ -36,7 +36,10 @@ namespace MarketOnline.Shell
                 //_ = Ping();
             }
         }
-
+        public static void Stop()
+        {
+            Client.Close();
+        }
         private static async Task Ping()
         {
             //await Task.Factory.StartNew(async () =>

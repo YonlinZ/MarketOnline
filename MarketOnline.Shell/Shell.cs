@@ -1,4 +1,5 @@
 ﻿using CommonHelper;
+using MarketOnline.Shell.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,8 @@ namespace MarketOnline.Shell
     public partial class Shell : Form
     {
         private Form _currentForm;
+        private NotifyIcon _notifyIcon;
+        private bool _isClose = false;
         public Shell()
         {
             InitializeComponent();
@@ -23,6 +26,22 @@ namespace MarketOnline.Shell
         {
             klineMenu.Tag = MemoryCacheUtil.GetCacheItem<Form>(nameof(FormKline));
             AnaMenu.Tag = MemoryCacheUtil.GetCacheItem<Form>(nameof(FormAnalysis));
+
+
+            ContextMenuStrip contextMenuStrip = new ContextMenuStrip(new Container());
+            contextMenuStrip.Items.AddRange(new ToolStripItem[]
+            {
+                new ToolStripMenuItem("Exit", null, Exit)
+            });
+
+            _notifyIcon = new NotifyIcon()
+            {
+                Icon = Resources.Bitcoin,
+                ContextMenuStrip = contextMenuStrip,
+                Visible = true
+            };
+            _notifyIcon.DoubleClick += new EventHandler(HandleDoubleClick);
+
         }
         private void MenuClick(object sender, EventArgs e)
         {
@@ -45,6 +64,22 @@ namespace MarketOnline.Shell
         private void Shell_SizeChanged(object sender, EventArgs e)
         {
             //_currentForm.Size = panel1.Size;
+        }
+        private void Exit(object sender, EventArgs e)
+        {
+            _isClose = true;
+            WebSocketClient.Stop();
+            Application.Exit();
+        }
+
+        private void HandleDoubleClick(object Sender, EventArgs e)
+        {
+            Show();
+        }
+        private void Shell_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Hide();
+            e.Cancel = !_isClose;
         }
     }
 }

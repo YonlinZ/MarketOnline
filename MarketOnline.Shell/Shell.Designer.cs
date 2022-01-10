@@ -32,11 +32,11 @@ namespace MarketOnline.Shell
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Shell));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.klineMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.AnaMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.Status = new System.Windows.Forms.ToolStripStatusLabel();
-            this.AnaMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -59,6 +59,13 @@ namespace MarketOnline.Shell
             this.klineMenu.Size = new System.Drawing.Size(64, 21);
             this.klineMenu.Text = "K线数据";
             this.klineMenu.Click += new System.EventHandler(this.MenuClick);
+            // 
+            // AnaMenu
+            // 
+            this.AnaMenu.Name = "AnaMenu";
+            this.AnaMenu.Size = new System.Drawing.Size(68, 21);
+            this.AnaMenu.Text = "分析数据";
+            this.AnaMenu.Click += new System.EventHandler(this.MenuClick);
             // 
             // panel1
             // 
@@ -97,13 +104,6 @@ namespace MarketOnline.Shell
             this.Status.Text = "状态栏";
             this.Status.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // AnaMenu
-            // 
-            this.AnaMenu.Name = "AnaMenu";
-            this.AnaMenu.Size = new System.Drawing.Size(68, 21);
-            this.AnaMenu.Text = "分析数据";
-            this.AnaMenu.Click += new System.EventHandler(this.MenuClick);
-            // 
             // Shell
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -117,6 +117,7 @@ namespace MarketOnline.Shell
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Shell";
             this.Text = "MarketOnline";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Shell_FormClosing);
             this.SizeChanged += new System.EventHandler(this.Shell_SizeChanged);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
