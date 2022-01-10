@@ -69,11 +69,13 @@ namespace MarketOnline.Shell
         {
             _isClose = true;
             WebSocketClient.Stop();
+            _notifyIcon.Visible = false;
             Application.Exit();
         }
 
         private void HandleDoubleClick(object Sender, EventArgs e)
         {
+            WindowState = FormWindowState.Normal;
             Show();
         }
         private void Shell_FormClosing(object sender, FormClosingEventArgs e)
