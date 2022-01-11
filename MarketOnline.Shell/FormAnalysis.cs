@@ -202,6 +202,7 @@ namespace MarketOnline.Shell
                             if (price != null)
                             {
                                 row["Price"] = double.Parse(price);
+                                row["Price/Close"] = (double.Parse(price) - (double)row["Close"]) / (double)row["Close"];
                             }
                         }
                         catch (Exception ex)
