@@ -122,7 +122,7 @@ namespace MarketOnline.Shell
             try
             {
                 Enabled = false;
-                ts = Task.Run(() =>
+                ts = Task.Run(async () =>
                 {
                     var tslist = new List<Task>();
                     foreach (var symbol in LoadedResource.AllSymbols)
@@ -133,7 +133,7 @@ namespace MarketOnline.Shell
                         });
                         tslist.Add(temp);
                     }
-                    Task.WhenAll(tslist);
+                    await Task.WhenAll(tslist);
                     sw.Stop();
                 });
             }
@@ -143,6 +143,7 @@ namespace MarketOnline.Shell
                 {
                     Enabled = true;
                     Debug.WriteLine($"耗时：{sw.ElapsedMilliseconds / 1000.0} 秒。");
+                    Utils.SetStatus($"耗时：{sw.ElapsedMilliseconds / 1000.0} 秒。");
                 })));
             }
         }
