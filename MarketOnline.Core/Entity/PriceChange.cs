@@ -31,9 +31,9 @@ namespace MarketOnline.Core.Entity
         public string quoteVolume { get; set; }
         public long openTime { get; set; }
         public long closeTime { get; set; }
-        public int firstId { get; set; }
-        public int lastId { get; set; }
-        public int count { get; set; }
+        public long firstId { get; set; }
+        public long lastId { get; set; }
+        public uint count { get; set; }
     }
 
 }
