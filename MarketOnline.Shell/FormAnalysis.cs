@@ -151,8 +151,13 @@ namespace MarketOnline.Shell
             }
             DataTable newdt = ds.Tables[0].Clone();
 
+
             foreach (DataTable dt in ds.Tables)
             {
+                if (dt.Rows.Count==0)
+                {
+                    continue;
+                }
                 newdt.ImportRow(dt.Rows[0]);
             }
             if (!string.IsNullOrWhiteSpace(err))
@@ -193,6 +198,7 @@ namespace MarketOnline.Shell
                 {
                     var data = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Tiker>>(e.Data);
                     var dt = dgv.DataSource as DataTable;
+                    if (dt == null) return;
                     foreach (DataRow row in dt.Rows)
                     {
                         try
